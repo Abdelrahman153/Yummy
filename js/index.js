@@ -58,43 +58,34 @@ $(".fa-xmark").click(function () {
 });
 let DataInRow = document.getElementById("rowData");
 
-async function get_meail_in_first_page() {
+async  function getMealsInFirstPage(){
     DataInRow.innerHTML = "";
-    try {
-        const response = await fetch("https://www.themealdb.com/api/json/v1/1/categories.php");
-        const data = await response.json();
-        console.log(data);
 
-        // Call display_Category with the retrieved data
-        display_Category(data.categories);
-    } catch (error) {
-        console.error(error);
-    }
-    display_meail_in_first_page(data.categories)
+
+    let ApiCallInFirst = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=z`);
+    ApiCallInFirst = await ApiCallInFirst.json();
+
+console.log(ApiCallInFirst);
+DisplayMealsOnTheMain(ApiCallInFirst.meals)
 }
-get_meail_in_first_page()
-function display_meail_in_first_page(pepsieeeeeeeeeeee) {
-    searchContainer.innerHTML = ``
-    $(".loading-screen").fadeIn(10).fadeOut(300)
-    let zoza = "";
-    for (let i = 0; i < pepsieeeeeeeeeeee.length; i++) {
-        zoza += `
-            <div class="col-md-3">
-                <div onclick="getCategoryMeals('${pepsieeeeeeeeeeee[i].strCategory}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
-                    <img class="w-100 meal-image"  src="${pepsieeeeeeeeeeee[i].strCategoryThumb}" alt="" srcset="">
-                    <div class="meal-layer position-absolute text-center text-black p-2">
-                        <h3>${pepsieeeeeeeeeeee[i].strCategory}</h3>
-                        <p>${pepsieeeeeeeeeeee[i].strCategoryDescription.split(" ").slice(0, 20).join(" ")}</p>
-                    </div> 
+getMealsInFirstPage()
+function DisplayMealsOnTheMain(att){
+    let tempoo = "";
+
+    for (let i = 0; i < att.length; i++) {
+        tempoo += `
+        <div class="col-md-3">
+                <div onclick="getMealDetails('${att[i].idMeal}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
+                    <img class="w-100" src="${att[i].strMealThumb}" alt="" srcset="">
+                    <div class="meal-layer position-absolute d-flex align-items-center text-black p-2">
+                        <h3>${att[i].strMeal}</h3>
+                    </div>
                 </div>
-            </div>
+        </div>
         `;
     }
-
-    DataInRow.innerHTML = zoza;
-    console.log(DataInRow);
+    DataInRow.innerHTML = tempoo;
 }
-
 async function getCategoryData() {
     DataInRow.innerHTML = "";
     try {
@@ -580,3 +571,4 @@ function inputsValidation() {
         submitBtn.setAttribute("disabled", true);
     }
 }
+
